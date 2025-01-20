@@ -1,33 +1,28 @@
-﻿#Requires AutoHotkey v2.0+
+#Requires AutoHotkey v2.0+
+#SingleInstance Force
+
 ; volume down in smooth increments
 master_volume := Floor(SoundGetVolume())
 ; MsgBox "Master volume is " master_volume " percent."
 switch
 {
-	case master_volume > 90:
-		SoundSetVolume "89"
-	case master_volume > 80 && master_volume <= 90:
-		SoundSetVolume "79"
-	case master_volume > 70 && master_volume <= 80:
-		SoundSetVolume "69"
-	case master_volume > 60 && master_volume <= 70:
-		SoundSetVolume "59"
-	case master_volume > 50 && master_volume <= 60:
-		SoundSetVolume "49"
-	case master_volume > 40 && master_volume <= 50:
-		SoundSetVolume "39"
-	case master_volume > 30 && master_volume <= 40:
-		SoundSetVolume "29"
-	case master_volume > 20 && master_volume <= 30:
-		SoundSetVolume "19"
+	case master_volume > 20 && master_volume <= 100:
+		SoundSetVolume "-10"
+		ToolTip("volume " master_volume)
 	case master_volume > 12 && master_volume <= 20:
-		SoundSetVolume "11"
+		SoundSetVolume "12"
+		ToolTip("volume 12")
 	case master_volume > 8 && master_volume <= 12:
-		SoundSetVolume "7"
+		SoundSetVolume "8"
+		ToolTip("volume 8")
 	case master_volume > 5 && master_volume <= 8:
-		SoundSetVolume "4"
+		SoundSetVolume "5"
+		ToolTip("volume 5")
 	case master_volume > 2 && master_volume <= 5:
-		SoundSetVolume "1"
+		SoundSetVolume "2"
+		ToolTip("volume 2")
 	case master_volume <= 2:
 		SoundSetVolume "0"
+		ToolTip("volume 0")
 }
+SetTimer () => ToolTip(), -500
