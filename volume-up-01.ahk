@@ -1,28 +1,32 @@
 #Requires AutoHotkey v2.0+
 #SingleInstance Force
 
-; volume up in smooth increments
-master_volume := Round(SoundGetVolume())
-; MsgBox "Master volume is " master_volume " percent."
-switch
-{
-	case master_volume >= 20 && master_volume < 100:
-		SoundSetVolume "+10"
-		ToolTip("volume " master_volume)
-	case master_volume >= 12 && master_volume < 20:
-		SoundSetVolume "20"
-		ToolTip("volume 20")
-	case master_volume >= 8 && master_volume < 12:
-		SoundSetVolume "12"
-		ToolTip("volume 12")
-	case master_volume >= 5 && master_volume < 8:
-		SoundSetVolume "8"
-		ToolTip("volume 8")
-	case master_volume >= 2 && master_volume < 5:
-		SoundSetVolume "5"
-		ToolTip("volume 5")
-	case master_volume < 2:
-		SoundSetVolume "2"
-		ToolTip("volume 2")
+; Define volume levels
+volume_levels := [0, 2, 5, 8, 12, 20, 30, 40, 50, 60, 70, 80, 90, 100]
+
+current_volume := Round(SoundGetVolume())
+
+; Find the closest volume level index
+closest_idx := 1
+min_diff := Abs(volume_levels[1] - current_volume)
+
+for idx, level in volume_levels {
+    diff := Abs(level - current_volume)
+    if (diff < min_diff) {
+        min_diff := diff
+        closest_idx := idx
+    }
 }
+
+; Calculate new index
+new_idx := closest_idx + 1
+
+; Ensure we don't exceed maximum
+if (new_idx > volume_levels.Length)
+    new_idx := volume_levels.Length
+
+; Set new volume
+new_volume := volume_levels[new_idx]
+SoundSetVolume new_volume
+ToolTip("Volume " new_volume "%")
 SetTimer () => ToolTip(), -500
